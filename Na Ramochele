@@ -1,0 +1,319 @@
+/basotho-foundry
+│
+├── /public                  # Static files
+│   ├── index.html           # Signup Page
+│   ├── dashboard.html       # User Dashboard
+│   ├── login.html           # Login Page
+│   ├── withdraw.html        # Withdrawal Page
+│   └── styles.css           # CSS Styles
+│
+├── /src                     # Source files
+│   ├── script.js            # Frontend Logic
+│   └── app.js               # Main Server File
+│
+├── /models                  # Database Models
+│   ├── user.js              # User Model
+│   └── investment.js        # Investment Model
+│
+├── /routes                  # API Routes
+│   ├── auth.js              # Authentication Routes
+│   └── investments.js        # Investment Routes
+│
+└── package.json              # Node.js Dependencies
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basotho Foundry - Sign Up</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Basotho Foundry</h1>
+        <h2>Sign Up</h2>
+        <form id="signupForm">
+            <label for="phone">Phone Number:</label>
+            <input type="text" id="phone" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+            <button type="submit">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="login.html">Login</a></p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basotho Foundry - Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Basotho Foundry</h1>
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label for="loginPhone">Phone Number:</label>
+            <input type="text" id="loginPhone" required>
+            <label for="loginPassword">Password:</label>
+            <input type="password" id="loginPassword" required>
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="index.html">Sign Up</a></p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basotho Foundry - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Dashboard</h1>
+        <div id="investmentDetails">
+            <p>Deposited Amount: <span id="depositedAmount">M0</span></p>
+            <p>Accumulated Amount: <span id="accumulatedAmount">M0</span></p>
+            <p>Investment Growth: <span id="investmentGrowth">0%</span></p>
+        </div>
+        <label for="investmentAmount">Select Investment Amount:</label>
+        <select id="investmentAmount">
+            <option value="100">M100</option>
+            <option value="500">M500</option>
+            <option value="1000">M1000</option>
+            <option value="1500">M1500</option>
+            <option value="2500">M2500</option>
+        </select>
+        <button id="investButton">Invest</button>
+        <button id="withdrawButton">Withdraw</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basotho Foundry - Withdraw</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Withdraw Funds</h1>
+        <form id="withdrawForm">
+            <label for="withdrawAmount">Withdrawal Amount:</label>
+            <input type="number" id="withdrawAmount" required>
+            <button type="submit">Withdraw</button>
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: auto;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #4cae4c;
+}
+// Signup Form Logic
+document.getElementById('signupForm')?.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const phone = document.getElementById('phone').value;
+    const password = document.getElementById('password').value;
+
+    // Save user details (mock implementation)
+    localStorage.setItem('user', JSON.stringify({ phone, password }));
+
+    alert('Signup successful! Please log in to access your dashboard.');
+    window.location.href = 'login.html'; // Redirect to login
+});
+
+// Login Form Logic
+document.getElementById('loginForm')?.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const phone = document.getElementById('loginPhone').value;
+    const password = document.getElementById('loginPassword').value;
+
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user && user.phone === phone && user.password === password) {
+        window.location.href = 'dashboard.html'; // Redirect to dashboard
+    } else {
+        alert('Invalid credentials!');
+    }
+});
+
+// Investment Logic
+document.getElementById('investButton')?.addEventListener('click', function() {
+    const investmentAmount = parseInt(document.getElementById('investmentAmount').value);
+    const depositedAmount = document.getElementById('depositedAmount');
+    const accumulatedAmount = document.getElementById('accumulatedAmount');
+    const investmentGrowth = document.getElementById('investmentGrowth');
+
+    depositedAmount.innerText = `M${parseInt(depositedAmount.innerText.slice(1)) + investmentAmount}`;
+    accumulatedAmount.innerText = `M${parseInt(accumulatedAmount.innerText.slice(1)) + (investmentAmount * 1.4)}`; // Assuming 40% ROI
+    investmentGrowth.innerText = '40%'; // Update this based on actual investment
+});
+
+// Withdrawal Logic
+document.getElementById('withdrawButton')?.addEventListener('click', function() {
+    window.location.href = 'withdraw.html'; // Redirect to withdraw page
+});
+
+document.getElementById('withdrawForm')?.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const amount = parseFloat(document.getElementById('withdrawAmount').value);
+    const withdrawalFee = amount * 0.18; // 18% fee
+    const finalAmount = amount - withdrawalFee;
+
+    alert(`You will receive M${finalAmount} after the withdrawal fee of M${withdrawalFee}.`);
+    // Implement actual withdrawal logic here (e.g., API call)
+});
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const authRoutes = require('./routes/auth');
+const investmentRoutes = require('./routes/investments');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(bodyParser.json());
+app.use(express.static('public'));
+
+// MongoDB Connection
+mongoose.connect('mongodb://localhost/basotho_foundry', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
+
+// Use Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/investments', investmentRoutes);
+
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});
+const express = require('express');
+const router = express.Router();
+const User = require('../models/user');
+
+router.post('/signup', async (req, res) => {
+    const { phone, password } = req.body;
+    const user = new User({ phone, password });
+    await user.save();
+    res.send({ success: true });
+});
+
+router.post('/login', async (req, res) => {
+    const { phone, password } = req.body;
+    const user = await User.findOne({ phone });
+
+    if (user && user.password === password) {
+        res.send({ success: true });
+    } else {
+        res.status(401).send({ success: false, message: 'Invalid credentials' });
+    }
+});
+
+module.exports = router;
+const express = require('express');
+const router = express.Router();
+const Investment = require('../models/investment');
+
+router.post('/invest', async (req, res) => {
+    const { userId, amount } = req.body;
+    const investment = new Investment({
+        userId,
+        amount,
+        maturityDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days later
+        returnRate: 1.9, // Assuming 90% ROI
+    });
+    await investment.save();
+    res.send({ success: true });
+});
+
+module.exports = router;
+const mongoose = require('mongoose');
+
+const userSchema = new mongoose.Schema({
+    phone: String,
+    password: String, // Store hashed password in production
+});
+
+const User = mongoose.model('User', userSchema);
+module.exports = User;
+const mongoose = require('mongoose');
+
+const investmentSchema = new mongoose.Schema({
+    userId: String,
+    amount: Number,
+    maturityDate: Date,
+    returnRate: Number,
+    status: { type: String, default: 'active' },
+});
+
+const Investment = mongoose.model('Investment', investmentSchema);
+module.exports = Investment;
+{
+    "name": "basotho-foundry",
+    "version": "1.0.0",
+    "description": "Investment app for Basotho youth",
+    "main": "app.js",
+    "scripts": {
+        "start": "node src/app.js"
+    },
+    "dependencies": {
+        "express": "^4.17.1",
+        "body-parser": "^1.19.0",
+        "mongoose": "^5.10.9"
+    }
+}
